@@ -15,14 +15,16 @@ bot_id = "REPLACE THIS WITH YOUR BOT ID ONCE BOT IS ADDED TO THE CHAT"
 @app.route('/', methods=['POST'])
 def webhook():
 	# 'message' is an object that represents a single GroupMe message.
-	message = request.get_json()
+	
+	if not sender_is_bot(message): # if message contains 'groot', ignoring case, and sender is not a bot...
+		message = request.get_json()
+		
+		verses = ''
+		for verse in getVerse(message['text'].lower()):
+			verses = verses + verse.strip()
 
-	verses = ''
-	for verse in getVerse(message):
-		verses = verses + verse.strip()
-
-	reply(verses)
-
+		reply(verses)
+	
 	return "ok", 200
 
 
