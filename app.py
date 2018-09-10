@@ -6,7 +6,6 @@ import os
 import json
 import urllib3
 from flask import Flask, request
-from pprint import pprint
 
 app = Flask(__name__)
 bot_id = "REPLACE THIS WITH YOUR BOT ID ONCE BOT IS ADDED TO THE CHAT"
