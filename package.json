@@ -1,0 +1,22 @@
+{
+  "name": "bible-verse-groupme-bot",
+  "version": "1.0.0",
+  "description": "A groupme bot that returns bible verses",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/mariots/bible-verse-groupme-bot.git"
+  },
+  "author": "Mario Jimenez",
+  "license": "",
+  "bugs": {
+    "url": "https://github.com/mariots/bible-verse-groupme-bot/issues"
+  },
+  "homepage": "https://github.com/mariots/bible-verse-groupme-bot#readme",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}
