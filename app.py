@@ -34,6 +34,10 @@ def getVerse(verse):
 			verses = verses + verse.strip()
 	return verses
 
+@app.route('/', methods=['GET'])
+def alive():
+	return 'alive'
+
 def getVerse(message):
 	headers = {'content-type':'application/json', 
 				'Authorization':'Token 2981cf218fa90ffb3a422350cc586275b4617213'}
