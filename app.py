@@ -27,6 +27,12 @@ def webhook():
 	
 	return "ok", 200
 
+@app.route('/verse/<string:verse>', methods=['GET'])
+def getVerse(verse):
+	verses = ''
+		for verse in getVerse(verse):
+			verses = verses + verse.strip()
+	return verses
 
 def getVerse(message):
 	headers = {'content-type':'application/json', 
