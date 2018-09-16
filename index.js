@@ -21,7 +21,7 @@ app.listen(PORT, () => console.log('Example app listening on port 3000!'))
 // That'll happen every time a message is sent in the group
 app.post('/verse', (req, res) => {
 
-    let message = req.body.message
+    let message = req.body.text
     console.log(req.body)
 
     let books = ['genesis', 
