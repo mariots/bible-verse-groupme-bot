@@ -47,6 +47,7 @@ app.post('/verse', (req, res) => {
                 'esther',
                 'job',
                 'psalms',
+                'psalm',
                 'proverbs',
                 'ecclesiastes',
                 'song of solomon',
