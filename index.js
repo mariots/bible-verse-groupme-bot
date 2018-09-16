@@ -85,7 +85,15 @@ app.post('/verse', (req, res) => {
                 '2 john',
                 '3 john',
                 'jude',
-                'Revelation']
+                'Revelation',
+                'samuel',
+                'kings',
+                'chronicles',
+                'corinthians',
+                'thessalonians',
+                'timothy',
+                'peter',
+                'john']
 
     // TODO search all pieces of text in string, find bible books and pull them out
     let splitMessage = message.split(" ")
@@ -93,7 +101,7 @@ app.post('/verse', (req, res) => {
 
     // After we find the bible books, find the verses with it relative to all the other text
 
-    let foundBook = books.includes(splitMessage[0])
+    let foundBook = books.includes(splitMessage[0]) || books.includes(splitMessage[1])
     console.log("found book: ", foundBook)
 
     if (foundBook) {
@@ -101,7 +109,7 @@ app.post('/verse', (req, res) => {
     }
 
     // 'message' is an object that represents a single GroupMe message.
-    if (!sender_is_bot(req.body)) { // if message contains 'groot', ignoring case, and sender is not a bot...
+    if (!sender_is_bot(req.body) && foundBook) { // if message contains bible book, and sender is not a bot...
         
         // console.log(verse)
 
