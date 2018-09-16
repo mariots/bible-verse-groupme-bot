@@ -9,6 +9,10 @@ app.use(express.json());
 
 app.get('/', (req, res) => res.send('In the beginning, God created the heavens and the earth.'))
 
+app.get('/test-groupme', (req, res) => {
+    reply("In the beginning was the Word, and the Word was with God, and the Word was God.")
+})
+
 app.get('/bible', (req, res) => {
     res.sendfile("./images/bible.png")
 })
@@ -123,7 +127,7 @@ app.post('/verse', (req, res) => {
             let newVerse = verses[0].trim()
             console.log(newVerse)
 
-            reply(verses)
+            reply(newVerse)
 
             return res.status(200).send(newVerse)
         })
@@ -211,8 +215,9 @@ function reply(msg) {
                 console.log("failed", err)
             })
     })
-
 }
+
+
 
 // # Uploads image to GroupMe's services and returns the new URL
 // def upload_image_to_groupme(imgURL):
