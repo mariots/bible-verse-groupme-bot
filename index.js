@@ -3,7 +3,7 @@ const app = express()
 const PORT = process.env.PORT || 3000
 const axios = require('axios')
 
-const bot_id = "REPLACE THIS WITH YOUR BOT ID ONCE BOT IS ADDED TO THE CHAT"
+const bot_id = "6cab5b4f50b68ac9df58f04296"
 
 app.use(express.json());
 
@@ -123,7 +123,7 @@ app.post('/verse', (req, res) => {
             let newVerse = verses[0].trim()
             console.log(newVerse)
 
-            //reply(verses)
+            reply(verses)
 
             return res.status(200).send(newVerse)
         })
