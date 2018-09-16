@@ -26,9 +26,9 @@ app.post('/verse', (req, res) => {
 
             // console.log(verses)
             let newVerse = verses[0].trim()
-            // console.log(newVerse)
+            console.log(newVerse)
 
-            reply(verses)
+            //reply(verses)
 
             return res.status(200).send(newVerse)
         })
