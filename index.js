@@ -17,14 +17,30 @@ app.listen(PORT, () => console.log('Example app listening on port 3000!'))
 // That'll happen every time a message is sent in the group
 app.post('/verse', (req, res) => {
 
-    // console.log(req.body)
+    let message = req.body.message
+    console.log(req.body)
+
+    let books = ['genesis', 'exodus']
+
+    // TODO search all pieces of text in string, find bible books and pull them out
+    let splitMessage = message.split(" ")
+    console.log(splitMessage)
+
+    // After we find the bible books, find the verses with it relative to all the other text
+
+    let foundBook = books.includes(splitMessage[0])
+    console.log("found book: ", foundBook)
+
+    if (foundBook) {
+        console.log("Bible book is in the list")
+    }
 
     // 'message' is an object that represents a single GroupMe message.
     if (!sender_is_bot(req.body)) { // if message contains 'groot', ignoring case, and sender is not a bot...
-        verse = req.body.message
+        
         // console.log(verse)
 
-        getVerse(verse).then(function(verses) {
+        getVerse(message).then(function(verses) {
 
             // console.log(verses)
             let newVerse = verses[0].trim()
@@ -35,7 +51,7 @@ app.post('/verse', (req, res) => {
             return res.status(200).send(newVerse)
         })
     } else {
-        return res.status(200).send('sender is a bot..')
+        return res.status(200).send('OK')
     }
 })
 
