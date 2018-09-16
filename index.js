@@ -22,14 +22,19 @@ app.post('/verse', (req, res) => {
         verse = req.body.message
         // console.log(verse)
 
-        let response = getVerse(verse);
-        console.log(response)
-        return res.status(500).send(response)
-        
-        //reply(verses)
-        // return res.status(200).send('Message')
+        getVerse(verse).then(function(verses) {
+
+            // console.log(verses)
+            let newVerse = verses[0].trim()
+            // console.log(newVerse)
+
+            reply(verses)
+
+            return res.status(200).send(newVerse)
+        })
+    } else {
+        return res.status(200).send('sender is a bot..')
     }
-    return res.status(200).send('ok')
 })
 
 app.get('/verse/<string:verse>', (req, res) => {
@@ -74,35 +79,48 @@ function getVerse(message) {
         params: params
     }
 
-    axios.get(API_URL, config)
-    .then(function (res) {
-        console.log("axios response: ", res.data)
-        console.log("axios response: ", res)
-        console.log("VERSE BABAY")
-        console.log(res.data.passages)
-    }).catch(function (err) {
-        // console.log("axios error: ", err.response)
-        console.log("failed", err)
-        // return 'true'
+    return new Promise(function(resolve, reject) {
+        axios.get(API_URL, config)
+            .then(function (res) {
+                // console.log("axios response: ", res.data)
+                // console.log("axios response: ", res)
+                // console.log("VERSE BABAY")
+                console.log(res.data.passages)
+                resolve(res.data.passages)
+            }).catch(function (err) {
+                // console.log("axios error: ", err.response)
+                console.log("failed", err)
+            })
     })
-
-	// urllib3.disable_warnings()
-	// http = urllib3.PoolManager()
-	// r = http.request('GET',
-	// 				API_URL,
-	// 				fields=params,
-	// 				headers=headers)
-
-	// res = json.loads(r.data.decode('utf-8'))
-
-	// return res['passages']
 }
 
+function reply(msg) {
+    const url = 'https://api.groupme.com/v3/bots/post'
 
+    data = {
+        'bot_id': bot_id,
+        'text': msg
+    }
+
+    return new Promise(function(resolve, reject) {
+        axios.post(url, data)
+            .then(function (res) {
+                // console.log("axios response: ", res.data)
+                // console.log("axios response: ", res)
+                // console.log("VERSE BABAY")
+                //console.log(res.data.passages)
+                resolve(res)
+            }).catch(function (err) {
+                // console.log("axios error: ", err.response)
+                console.log("failed", err)
+            })
+    })
+
+}
 
 // # Send a message in the groupchat
 // def reply(msg):
-// 	url = 'https://api.groupme.com/v3/bots/post'
+// 	
 // 	data = {
 // 		'bot_id'		: bot_id,
 // 		'text'			: msg
