@@ -7,6 +7,8 @@ const bot_id = "REPLACE THIS WITH YOUR BOT ID ONCE BOT IS ADDED TO THE CHAT"
 
 app.use(express.json());
 
+app.get('/', (req, res) => res.send('In the beginning, God created the heavens and the earth.'))
+
 app.get('/liveliness', (req, res) => res.send('Alive'))
 
 app.listen(PORT, () => console.log('Example app listening on port 3000!'))
@@ -85,7 +87,7 @@ function getVerse(message) {
                 // console.log("axios response: ", res.data)
                 // console.log("axios response: ", res)
                 // console.log("VERSE BABAY")
-                console.log(res.data.passages)
+                // console.log(res.data.passages)
                 resolve(res.data.passages)
             }).catch(function (err) {
                 // console.log("axios error: ", err.response)
