@@ -192,7 +192,7 @@ function getVerse(message) {
 function reply(msg) {
     const url = 'https://api.groupme.com/v3/bots/post'
 
-    data = {
+    const data = {
         'bot_id': bot_id,
         'text': msg
     }
@@ -203,7 +203,8 @@ function reply(msg) {
                 // console.log("axios response: ", res.data)
                 // console.log("axios response: ", res)
                 // console.log("VERSE BABAY")
-                //console.log(res.data.passages)
+                console.log(bot_id)
+                console.log(msg)
                 resolve(res)
             }).catch(function (err) {
                 // console.log("axios error: ", err.response)
@@ -213,35 +214,6 @@ function reply(msg) {
 
 }
 
-// # Send a message in the groupchat
-// def reply(msg):
-// 	
-// 	data = {
-// 		'bot_id'		: bot_id,
-// 		'text'			: msg
-// 	}
-
-// 	urllib3.disable_warnings()
-// 	http = urllib3.PoolManager()
-// 	r = http.request('POST',
-// 					url,
-// 					fields=data)
-
-// 	return json.loads(r.data.decode('utf-8'))
-	
-
-// # Send a message with an image attached in the groupchat
-// def reply_with_image(msg, imgURL):
-// 	url = 'https://api.groupme.com/v3/bots/post'
-// 	urlOnGroupMeService = upload_image_to_groupme(imgURL)
-// 	data = {
-// 		'bot_id'		: bot_id,
-// 		'text'			: msg,
-// 		'picture_url'	: urlOnGroupMeService
-// 	}
-// 	request = Request(url, urlencode(data).encode())
-// 	json = urlopen(request).read().decode()
-	
 // # Uploads image to GroupMe's services and returns the new URL
 // def upload_image_to_groupme(imgURL):
 // 	imgRequest = requests.get(imgURL, stream=True)
