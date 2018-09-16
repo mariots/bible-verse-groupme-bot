@@ -9,6 +9,10 @@ app.use(express.json());
 
 app.get('/', (req, res) => res.send('In the beginning, God created the heavens and the earth.'))
 
+app.get('/bible', (req, res) => {
+    res.sendfile("./images/bible.png")
+})
+
 app.get('/liveliness', (req, res) => res.send('Alive'))
 
 app.listen(PORT, () => console.log('Example app listening on port 3000!'))
