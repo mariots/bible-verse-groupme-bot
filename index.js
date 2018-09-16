@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const PORT = process.env.PORT || 3000
+const axios = require('axios')
 
 const bot_id = "REPLACE THIS WITH YOUR BOT ID ONCE BOT IS ADDED TO THE CHAT"
 
@@ -14,16 +15,19 @@ app.listen(PORT, () => console.log('Example app listening on port 3000!'))
 // That'll happen every time a message is sent in the group
 app.post('/verse', (req, res) => {
 
-    console.log(req.body)
+    // console.log(req.body)
 
     // 'message' is an object that represents a single GroupMe message.
     if (!sender_is_bot(req.body)) { // if message contains 'groot', ignoring case, and sender is not a bot...
-        verses = req.body.message
-        console.log(verses)
+        verse = req.body.message
+        // console.log(verse)
 
+        let response = getVerse(verse);
+        console.log(response)
+        return res.status(500).send(response)
         
         //reply(verses)
-        return res.status(200).send('Message')
+        // return res.status(200).send('Message')
     }
     return res.status(200).send('ok')
 })
@@ -43,27 +47,44 @@ function sender_is_bot(message) {
 }
 
 function getVerse(message) {
-    const headers = {'content-type':'application/json', 
-				'Authorization':'Token 2981cf218fa90ffb3a422350cc586275b4617213'}
 
-    const API_URL = 'https://api.esv.org/v3/passage/text/'
+    const API_URL = 'https://api.esv.org/v3/passage/text'
     
     const params = {
         'q': message,
-        'include-headings': False,
-        'include-footnotes': False,
-		'indent-poetry': False,
+        'include-headings': false,
+        'include-footnotes': false,
+		'indent-poetry': false,
 		'indent-poetry-lines': 1,
-        'include-verse-numbers': False,
+        'include-verse-numbers': false,
 		'indent-paragraphs': 1,
-        'include-short-copyright': False,
-		'include-footnote-body': False,
-        'include-passage-references': False,
-		'include-passage-horizontal-lines': False,
-		'include-heading-horizontal-lines': False,
+        'include-short-copyright': false,
+		'include-footnote-body': false,
+        'include-passage-references': false,
+		'include-passage-horizontal-lines': false,
+		'include-heading-horizontal-lines': false,
         'horizontal-line-length': 1000
     }
 
+    const config = {
+        headers: {
+            'Content-Type':'application/json', 
+            'Authorization':'Token 70db78fe664b4a05bd20f3322143dabb3660656c'
+        },
+        params: params
+    }
+
+    axios.get(API_URL, config)
+    .then(function (res) {
+        console.log("axios response: ", res.data)
+        console.log("axios response: ", res)
+        console.log("VERSE BABAY")
+        console.log(res.data.passages)
+    }).catch(function (err) {
+        // console.log("axios error: ", err.response)
+        console.log("failed", err)
+        // return 'true'
+    })
 
 	// urllib3.disable_warnings()
 	// http = urllib3.PoolManager()
