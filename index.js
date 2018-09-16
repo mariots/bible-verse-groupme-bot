@@ -100,7 +100,7 @@ app.post('/verse', (req, res) => {
                 'john']
 
     // TODO search all pieces of text in string, find bible books and pull them out
-    let splitMessage = message.split(" ")
+    let splitMessage = message.toLowerCase().split(" ")
     console.log(splitMessage)
 
     // After we find the bible books, find the verses with it relative to all the other text
