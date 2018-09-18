@@ -4,20 +4,27 @@ const PORT = process.env.PORT || 3000
 const axios = require('axios')
 const bibleRegex = require('./bibleRegex')
 
-const bot_id = "6cab5b4f50b68ac9df58f04296"
+const marios_bot_id = "6cab5b4f50b68ac9df58f04296"
 
 app.use(express.json());
 
 app.get('/', (req, res) => {
+    
+    let regex = new RegExp(bibleRegex.books) 
+    // console.log(regex);
 
-    let regex = bibleRegex.books
-    console.log(regex);
+    let result = regex.exec("Testing for the book of genesis")
+    console.log("Regex result", result)
+
+    if(result != null) {
+        console.log("Found book: ", result[0])
+    }
 
     res.send('In the beginning, God created the heavens and the earth.')
 })
 
 app.get('/test-groupme', (req, res) => {
-    reply("In the beginning was the Word, and the Word was with God, and the Word was God.")
+    reply("In the beginning was the Word, and the Word was with God, and the Word was God.", marios_bot_id)
 })
 
 app.get('/bible', (req, res) => {
@@ -35,38 +42,38 @@ app.post('/verse', (req, res) => {
     let message = req.body.text
     console.log(req.body)
 
-    
+    let bot = req.query.bot;
 
-    // TODO search all pieces of text in string, find bible books and pull them out
-    let splitMessage = message.toLowerCase().split(" ")
-    console.log(splitMessage)
+    // Gets regex object for all books of the bible
+    let regex = new RegExp(bibleRegex.books) 
 
-    // After we find the bible books, find the verses with it relative to all the other text
+    // Tests against the message
+    let result = regex.exec(message.toLowerCase())
+    // console.log("Regex result", result)
 
-    let foundBook = books.includes(splitMessage[0]) || books.includes(splitMessage[1])
-    console.log("found book: ", foundBook)
+    if(result != null) {
+        // console.log("Found book: ", result[0])
 
-    if (foundBook) {
-        console.log("Bible book is in the list")
-    }
+        // 'message' is an object that represents a single GroupMe message.
+        if (!sender_is_bot(req.body)) { // if message contains bible book, and sender is not a bot...
+            
+            // Get verse sends the reference and returns the text
+            getVerse(message).then(function(verses) {
 
-    // 'message' is an object that represents a single GroupMe message.
-    if (!sender_is_bot(req.body) && foundBook) { // if message contains bible book, and sender is not a bot...
-        
-        // console.log(verse)
+                // console.log(verses)
+                let newVerse = verses[0].trim()
+                console.log(newVerse)
 
-        getVerse(message).then(function(verses) {
+                reply(newVerse, bot)
 
-            // console.log(verses)
-            let newVerse = verses[0].trim()
-            console.log(newVerse)
+                return res.status(200).send(newVerse)
+            })
+        } else {
+            return res.status(200).send('This is a bot')
+        }
 
-            reply(newVerse)
-
-            return res.status(200).send(newVerse)
-        })
     } else {
-        return res.status(200).send('OK')
+        return res.status(200).send('Book is not in the list')
     }
 })
 
@@ -127,7 +134,7 @@ function getVerse(message) {
     })
 }
 
-function reply(msg) {
+function reply(msg, bot_id) {
     const url = 'https://api.groupme.com/v3/bots/post'
 
     const data = {
