@@ -31,8 +31,6 @@ app.get('/bible', (req, res) => {
     res.sendfile("./images/bible.png")
 })
 
-app.get('/liveliness', (req, res) => res.send('Alive'))
-
 app.listen(PORT, () => console.log('Example app listening on port 3000!'))
 
 // Called whenever the app's callback URL receives a POST request
@@ -157,25 +155,3 @@ function reply(msg, bot_id) {
             })
     })
 }
-
-
-
-// # Uploads image to GroupMe's services and returns the new URL
-// def upload_image_to_groupme(imgURL):
-// 	imgRequest = requests.get(imgURL, stream=True)
-// 	filename = 'temp.png'
-// 	postImage = None
-// 	if imgRequest.status_code == 200:
-// 		# Save Image
-// 		with open(filename, 'wb') as image:
-// 			for chunk in imgRequest:
-// 				image.write(chunk)
-// 		# Send Image
-// 		headers = {'content-type': 'application/json'}
-// 		url = 'https://image.groupme.com/pictures'
-// 		files = {'file': open(filename, 'rb')}
-// 		payload = {'access_token': 'eo7JS8SGD49rKodcvUHPyFRnSWH1IVeZyOqUMrxU'}
-// 		r = requests.post(url, files=files, params=payload)
-// 		imageurl = r.json()['payload']['url']
-// 		os.remove(filename)
-// 		return imageurl
