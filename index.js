@@ -4,7 +4,7 @@ const PORT = process.env.PORT || 3000
 const axios = require('axios')
 const bibleRegex = require('./bibleRegex')
 
-const marios_bot_id = "6cab5b4f50b68ac9df58f04296"
+
 
 app.use(express.json());
 
@@ -31,7 +31,7 @@ app.get('/bible', (req, res) => {
     res.sendfile("./images/bible.png")
 })
 
-app.listen(PORT, () => console.log('Example app listening on port 3000!'))
+app.listen(PORT, () => console.log(`Bible Verse GroupMe Bot is running on port ${PORT}!`))
 
 // Called whenever the app's callback URL receives a POST request
 // That'll happen every time a message is sent in the group
