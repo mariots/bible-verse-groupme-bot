@@ -1,6 +1,6 @@
 {
   "name": "bible-verse-groupme-bot",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A groupme bot that returns bible verses",
   "main": "index.js",
   "scripts": {
