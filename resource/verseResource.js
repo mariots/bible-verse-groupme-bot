@@ -1,9 +1,9 @@
 const express = require('express');
-const app = express();
 const axios = require('axios');
 const bibleRegex = require('../model/bibleRegex');
+const verseService = require('../service/verseService');
 
-app.use(express.json());
+let app = express.Router();
 
 app.get('/', (req, res) => {
     
@@ -17,7 +17,9 @@ app.get('/', (req, res) => {
         console.log("Found book: ", result[0]);
     }
 
-    res.send('In the beginning, God created the heavens and the earth.');
+    let text = verseService.test
+    
+    res.send();
 });
 
 app.get('/test-groupme', (req, res) => {
