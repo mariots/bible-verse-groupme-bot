@@ -1,50 +1,47 @@
-const express = require('express')
-const app = express()
-const PORT = process.env.PORT || 3000
-const axios = require('axios')
-const bibleRegex = require('./bibleRegex')
+const express = require('express');
+const app = express();
+const axios = require('axios');
+const bibleRegex = require('../model/bibleRegex');
 
 app.use(express.json());
 
 app.get('/', (req, res) => {
     
-    let regex = new RegExp(bibleRegex.books) 
+    let regex = new RegExp(bibleRegex.books);
     // console.log(regex);
 
-    let result = regex.exec("Testing for the book of genesis")
-    console.log("Regex result", result)
+    let result = regex.exec("Testing for the book of genesis");
+    console.log("Regex result", result);
 
     if(result != null) {
-        console.log("Found book: ", result[0])
+        console.log("Found book: ", result[0]);
     }
 
-    res.send('In the beginning, God created the heavens and the earth.')
-})
+    res.send('In the beginning, God created the heavens and the earth.');
+});
 
 app.get('/test-groupme', (req, res) => {
-    reply("In the beginning was the Word, and the Word was with God, and the Word was God.", marios_bot_id)
-})
+    reply("In the beginning was the Word, and the Word was with God, and the Word was God.", process.env.MARIOS_BOT_ID);
+});
 
 app.get('/bible', (req, res) => {
-    res.sendfile("./images/bible.png")
-})
-
-app.listen(PORT, () => console.log(`Bible Verse GroupMe Bot is running on port ${PORT}!`))
+    res.sendfile("./images/bible.png");
+});
 
 // Called whenever the app's callback URL receives a POST request
 // That'll happen every time a message is sent in the group
 app.post('/verse', (req, res) => {
 
-    let message = req.body.text
-    console.log(req.body)
+    let message = req.body.text;
+    console.log(req.body);
 
     let bot = req.query.bot;
 
     // Gets regex object for all books of the bible
-    let regex = new RegExp(bibleRegex.books) 
+    let regex = new RegExp(bibleRegex.books);
 
     // Tests against the message
-    let result = regex.exec(message.toLowerCase())
+    let result = regex.exec(message.toLowerCase());
     // console.log("Regex result", result)
 
     if(result != null) {
@@ -57,39 +54,39 @@ app.post('/verse', (req, res) => {
             getVerse(message).then(function(verses) {
 
                 // console.log(verses)
-                let newVerse = verses[0].trim()
-                console.log(newVerse)
+                let newVerse = verses[0].trim();
+                console.log(newVerse);
 
-                reply(newVerse, bot)
+                reply(newVerse, bot);
 
-                return res.status(200).send(newVerse)
+                return res.status(200).send(newVerse);
             })
         } else {
-            return res.status(200).send('This is a bot')
+            return res.status(200).send('This is a bot');
         }
 
     } else {
-        return res.status(200).send('Book is not in the list')
+        return res.status(200).send('Book is not in the list');
     }
 })
 
 app.get('/verse/<string:verse>', (req, res) => {
-    verses = ''
+    verses = '';
     for (verse in getVerse(verse)) {
-        verses = verses + verse.strip()
+        verses = verses + verse.strip();
     }
 
-	res.send(verses)
+	res.send(verses);
 })
 
 // Checks whether the message sender is a bot
 function sender_is_bot(message) {
-    return message['sender_type'] == "bot"
+    return message['sender_type'] == "bot";
 }
 
 function getVerse(message) {
 
-    const API_URL = 'https://api.esv.org/v3/passage/text'
+    const API_URL = 'https://api.esv.org/v3/passage/text';
     
     const params = {
         'q': message,
@@ -122,16 +119,16 @@ function getVerse(message) {
                 // console.log("axios response: ", res)
                 // console.log("VERSE BABAY")
                 // console.log(res.data.passages)
-                resolve(res.data.passages)
+                resolve(res.data.passages);
             }).catch(function (err) {
                 // console.log("axios error: ", err.response)
-                console.log("failed", err)
+                console.log("failed", err);
             })
     })
 }
 
 function reply(msg, bot_id) {
-    const url = 'https://api.groupme.com/v3/bots/post'
+    const url = 'https://api.groupme.com/v3/bots/post';
 
     const data = {
         'bot_id': bot_id,
@@ -144,12 +141,14 @@ function reply(msg, bot_id) {
                 // console.log("axios response: ", res.data)
                 // console.log("axios response: ", res)
                 // console.log("VERSE BABAY")
-                console.log(bot_id)
-                console.log(msg)
-                resolve(res)
+                console.log(bot_id);
+                console.log(msg);
+                resolve(res);
             }).catch(function (err) {
                 // console.log("axios error: ", err.response)
-                console.log("failed", err)
+                console.log("failed", err);
             })
     })
 }
+
+module.exports = app;
