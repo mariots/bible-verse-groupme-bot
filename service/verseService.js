@@ -1,3 +1,4 @@
+const bibleRegex = require('../model/bibleRegex');
 
 function testRegex() { // TODO Delete all this later... EG Write real test cases...
     let regex = new RegExp(bibleRegex.books);

@@ -1,29 +1,17 @@
 const express = require('express');
 const axios = require('axios');
-const bibleRegex = require('../model/bibleRegex');
 const verseService = require('../service/verseService');
 
 let app = express.Router();
 
 app.get('/', (req, res) => {
-    
-    let regex = new RegExp(bibleRegex.books);
-    // console.log(regex);
-
-    let result = regex.exec("Testing for the book of genesis");
-    console.log("Regex result", result);
-
-    if(result != null) {
-        console.log("Found book: ", result[0]);
-    }
-
-    let text = verseService.test
-    
-    res.send();
+    let text = verseService.testRegex();
+    res.status(200).send(text);
 });
 
 app.get('/test-groupme', (req, res) => {
-    reply("In the beginning was the Word, and the Word was with God, and the Word was God.", process.env.MARIOS_BOT_ID);
+    reply("In the beginning was the Word, and the Word was with God, and the Word was God.", process.env.TEST_BOT_ID);
+    res.status(200).send('Successful');
 });
 
 app.get('/bible', (req, res) => {
@@ -34,6 +22,7 @@ app.get('/bible', (req, res) => {
 // That'll happen every time a message is sent in the group
 app.post('/verse', (req, res) => {
 
+    
     let message = req.body.text;
     console.log(req.body);
 
@@ -70,7 +59,7 @@ app.post('/verse', (req, res) => {
     } else {
         return res.status(200).send('Book is not in the list');
     }
-})
+});
 
 app.get('/verse/<string:verse>', (req, res) => {
     verses = '';
@@ -79,12 +68,7 @@ app.get('/verse/<string:verse>', (req, res) => {
     }
 
 	res.send(verses);
-})
-
-// Checks whether the message sender is a bot
-function sender_is_bot(message) {
-    return message['sender_type'] == "bot";
-}
+});
 
 function getVerse(message) {
 
@@ -127,6 +111,11 @@ function getVerse(message) {
                 console.log("failed", err);
             })
     })
+}
+
+// Checks whether the message sender is a bot
+function sender_is_bot(message) {
+    return message['sender_type'] == "bot";
 }
 
 function reply(msg, bot_id) {
