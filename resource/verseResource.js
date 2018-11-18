@@ -1,34 +1,35 @@
 const express = require('express');
-const axios = require('axios');
 const verseService = require('../service/verseService');
+const reply = require('../service/groupMeService');
 
-let app = express.Router();
+const app = express.Router();
 
 app.get('/', (req, res) => {
-    let text = verseService.testRegex();
+    const text = verseService.testRegex();
     res.status(200).send(text);
 });
 
+// TODO: This should be moved to a test case.
 app.get('/test-groupme', (req, res) => {
-    reply("In the beginning was the Word, and the Word was with God, and the Word was God.", process.env.TEST_BOT_ID);
+    reply('In the beginning was the Word, and the Word was with God, and the Word was God.', process.env.TEST_BOT_ID);
     res.status(200).send('Successful');
 });
 
 app.get('/bible', (req, res) => {
-    res.sendfile("./images/bible.png");
+    res.sendfile('./images/bible.png');
 });
 
 // Called whenever the app's callback URL receives a POST request
 // That'll happen every time a message is sent in the group
 app.post('/verse', (req, res) => {
-    let request = verseService.sendVerseToGroupMe();
+    const request = verseService.sendVerseToGroupMe();
     return res.status(request.status).send(request.data);
 });
 
 app.get('/verse/<string:verse>', (req, res) => {
-    let request = verseService.
+    const request = verseService.getVerses();
 
-	res.send(verses);
+    res.send(request);
 });
 
 module.exports = app;
