@@ -27,7 +27,7 @@ function getVerse(message) {
         params,
     };
 
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         axios.get(API_URL, config)
             .then((res) => {
                 // console.log("axios response: ", res.data)
@@ -38,6 +38,7 @@ function getVerse(message) {
             }).catch((err) => {
                 // console.log("axios error: ", err.response)
                 console.log('failed: ', err);
+                reject(err);
             });
     });
 }
