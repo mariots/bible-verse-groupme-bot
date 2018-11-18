@@ -22,7 +22,7 @@ app.get('/bible', (req, res) => {
 // Called whenever the app's callback URL receives a POST request
 // That'll happen every time a message is sent in the group
 app.post('/verse', (req, res) => {
-    const request = verseService.sendVerseToGroupMe();
+    const request = verseService.sendVerseToGroupMe(req);
     return res.status(request.status).send(request.data);
 });
 
