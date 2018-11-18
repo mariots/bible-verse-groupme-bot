@@ -12,6 +12,8 @@ module.exports = {
         'quote-props': ['error', 'consistent'],
         'no-console': 'off',
         'prefer-destructuring': 'off',
-        'consistent-return': 'off'
+        'consistent-return': 'off',
+        'guard-for-in': 'off',
+        'no-restricted-syntax': 'off',
     }
 };

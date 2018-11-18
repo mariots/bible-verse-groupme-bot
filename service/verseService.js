@@ -1,71 +1,77 @@
 const bibleRegex = require('../model/bibleRegex');
+const groupMeService = require('./groupMeService');
+const esvProxy = require('../proxy/esvProxy');
 
 function testRegex() { // TODO Delete all this later... EG Write real test cases...
-    let regex = new RegExp(bibleRegex.books);
+    const regex = new RegExp(bibleRegex.books);
     // console.log(regex);
 
-    let result = regex.exec('Testing for the book of genesis');
+    const result = regex.exec('Testing for the book of genesis');
     console.log('Regex result', result);
 
-    if(result != null) {
+    if (result != null) {
         console.log('Found book: ', result[0]);
     }
 
-    let text = 'In the beginning, God created the heavens and the earth.';
-
+    const text = 'In the beginning, God created the heavens and the earth.';
     return text;
 }
 
-function sendVerseToGroupMe() {
-
-    let message = req.body.text;
+function sendVerseToGroupMe(req) {
+    const message = req.body.text;
     console.log(req.body);
+    const response = {};
 
-    let bot = req.query.bot;
+    const bot = req.query.bot;
 
     // Gets regex object for all books of the bible
-    let regex = new RegExp(bibleRegex.books);
+    const regex = new RegExp(bibleRegex.books);
 
     // Tests against the message
-    let result = regex.exec(message.toLowerCase());
+    const result = regex.exec(message.toLowerCase());
     // console.log("Regex result", result)
 
-    if(result != null) {
+    if (result != null) {
         // console.log("Found book: ", result[0])
 
         // 'message' is an object that represents a single GroupMe message.
-        if (!sender_is_bot(req.body)) { // if message contains bible book, and sender is not a bot...
-            
+        // if message contains bible book, and sender is not a bot...
+        if (!groupMeService.senderIsBot(req.body)) {
             // Get verse sends the reference and returns the text
-            getVerse(message).then(function(verses) {
-
+            esvProxy.getVerse(message).then((verses) => {
                 // console.log(verses)
-                let newVerse = verses[0].trim();
+                const newVerse = verses[0].trim();
                 console.log(newVerse);
 
-                reply(newVerse, bot);
+                groupMeService.reply(newVerse, bot);
 
-                return res.status(200).send(newVerse);
-            })
+                response.status = 200;
+                response.data = newVerse;
+                return response;
+            });
         } else {
-            return res.status(200).send('This is a bot');
+            response.status = 200;
+            response.data = 'This is a bot';
+            return response;
         }
-
     } else {
-        return res.status(200).send('Book is not in the list');
+        response.status = 200;
+        response.data = 'Book is not in the list';
+        return response;
     }
 }
 
-function getVerses() {
-    verses = '';
-    for (verse in getVerse(verse)) {
-        verses = verses + verse.strip();
+function getVerses(originVerse) {
+    let verses = '';
+    let verse = '';
+    for (verse in esvProxy.getVerse(originVerse)) {
+        verses += verse.strip();
     }
     return verses;
 }
 
 module.exports = {
-    testRegex: testRegex,
-    sendVerseToGroupMe: sendVerseToGroupMe,
-    getVerses: getVerses
-}
+    testRegex,
+    sendVerseToGroupMe,
+    getVerses,
+};
