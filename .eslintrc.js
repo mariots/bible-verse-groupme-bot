@@ -9,6 +9,7 @@ module.exports = {
     "rules": {
         // Indent with 4 spaces
         'indent': ['error', 4],
-        'quote-props': ["error", "consistent"],
+        'quote-props': ['error', 'consistent'],
+        'no-console': 'off',
     }
 };
