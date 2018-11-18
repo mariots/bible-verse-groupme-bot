@@ -11,5 +11,7 @@ module.exports = {
         'indent': ['error', 4],
         'quote-props': ['error', 'consistent'],
         'no-console': 'off',
+        'prefer-destructuring': 'off',
+        'consistent-return': 'off'
     }
 };
